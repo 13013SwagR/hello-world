@@ -5,8 +5,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+          # echo ${github.sha}
       - run: |
-          echo ${github.sha}
           date -I
           echo ${env.DATE}
           echo "DATE=$(date -I)"
