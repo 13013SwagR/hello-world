@@ -8,6 +8,9 @@ jobs:
       - run: ls -alh
       - run: pwd
       - run: tree
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v2.3.0
+
 # build
 ## Create artifact
 ## Publish artifact
