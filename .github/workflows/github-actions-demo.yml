@@ -10,7 +10,7 @@ jobs:
         uses: actions/upload-artifact@v2.3.0
         with:
           name: my-build-artifact
-          with: thegame.txt
+          path: thegame.txt
 
 
 # build
