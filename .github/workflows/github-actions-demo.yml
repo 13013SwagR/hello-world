@@ -8,9 +8,9 @@ jobs:
       - run: |
           echo {{ github.sha }}
           date -I
-          echo env.DATE
+          echo {{ env.DATE }}
           echo "DATE=$(date -I)"
-          echo env.DATE
+          echo {{ env.DATE }}
       - run: echo "It's all in the game" > thegame.txt 
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v2.3.0
