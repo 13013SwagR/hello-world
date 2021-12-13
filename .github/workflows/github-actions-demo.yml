@@ -5,6 +5,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - run: |
+          echo {{ github.sha }}
+          date -I
+          echo env.DATE
+          echo "DATE=$(date -I)"
+      - run: echo env.DATE
       - run: echo "It's all in the game" > thegame.txt 
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v2.3.0
@@ -16,3 +22,4 @@ jobs:
 # build
 ## Create artifact
 ## Publish artifact
+https://github.com/13013SwagR/hello-world/suites/4645262316/artifacts/126000027
