@@ -7,7 +7,7 @@ jobs:
       - uses: actions/checkout@v2
       - run: |
           date -I
-          echo ${env.DATE}
+          # echo ${env.DATE}
           echo ${github_sha}
           echo ${GITHUB_SHA}
           echo "DATE=$(date -I)"
