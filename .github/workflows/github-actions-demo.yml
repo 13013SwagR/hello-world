@@ -5,11 +5,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - run: ls -alh
-      - run: pwd
-      - run: tree
+      - run: cat "It's all in the game" > thegame.txt 
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v2.3.0
+        with:
+          name: my-build-artifact
+          with: thegame.txt
+
 
 # build
 ## Create artifact
