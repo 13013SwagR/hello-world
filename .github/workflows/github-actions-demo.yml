@@ -8,20 +8,15 @@ jobs:
       - uses: actions/checkout@v2
       - name: set date
         run: |
-          echo "SHORT_SHA=$(echo ${GITHUB_SHA} | cut -c1-7)" >> $GITHUB_ENV
-          echo "DATE=$(date '+%Y%m%dT%H%M%S')" >> $GITHUB_ENV
-      - name: read date
-        run: |
-          echo "${{env.SHORT_SHA}}"
-          echo $SHORT_SHA
-          echo "EOF"
+          echo "BUILD_NUMBER=$(echo ${GITHUB_SHA} | cut -c1-7)-$(date '+%Y%m%dT%H%M%S')" >> $GITHUB_ENV
+# echo "DATE=$(date '+%Y%m%dT%H%M%S')" >> $GITHUB_ENV
 ## Create artifact
       - run: echo "It's all in the game" > thegame.txt 
 ## Publish artifact
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v2.3.0
         with:
-          name: my-build-artifact-${{env.SHORT_SHA}}-${{env.DATE}}
+          name: my-build-artifact-${{env.BUILD_NUMBER}}
           path: thegame.txt
 
 
