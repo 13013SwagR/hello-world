@@ -11,7 +11,8 @@ jobs:
           # echo ${github_sha}
           echo ${GITHUB_SHA}
           echo "DATE=$(date -I)" >> $GITHUB_ENV
-          echo ${env_DATE}
+          echo ${GITHUB_ENV}
+          echo "EOF"
       - run: echo "It's all in the game" > thegame.txt 
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v2.3.0
