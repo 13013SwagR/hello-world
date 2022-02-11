@@ -6,17 +6,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: set date
+      - name: Generate BUILD_NUMBER
         run: |
           echo "BUILD_NUMBER=$(echo ${GITHUB_SHA} | cut -c1-7)-$(date '+%Y%m%dT%H%M%S')" >> $GITHUB_ENV
 # echo "DATE=$(date '+%Y%m%dT%H%M%S')" >> $GITHUB_ENV
 ## Create artifact
-      - run: echo "It's all in the game" > thegame.txt 
+      - name: Create artifact
+        run: echo "It's all in the game" > thegame.txt 
 ## Publish artifact
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v2.3.0
         with:
-          name: my-build-artifact-${{env.BUILD_NUMBER}}
+          name: theGame-artifact-${{env.BUILD_NUMBER}}
           path: thegame.txt
 
 
