@@ -22,7 +22,7 @@ jobs:
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v2.3.0
         with:
-          name: my-build-artifact-{{ github.sha }}-$DATE
+          name: my-build-artifact-{{ github.sha }}-{{env.DATE}}
           path: thegame.txt
 
 
