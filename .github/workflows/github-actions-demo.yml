@@ -1,24 +1,23 @@
 name: learn-github-actions
 on: [push]
 jobs:
+# build
   build-hello-world:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: set date
         run: |
-          date '+%FT%H%M%S%z'
           echo "SHORT_SHA=$(echo ${GITHUB_SHA} | cut -c1-7)" >> $GITHUB_ENV
-          echo "DATE=$(date '+%FT%H%M%S%z')" >> $GITHUB_ENV
-          echo "${{env.SHORT_SHA}}"
-          echo $SHORT_SHA
-          echo "EOF"
+          echo "DATE=$(date '+%FT%H%M%S')" >> $GITHUB_ENV
       - name: read date
         run: |
           echo "${{env.SHORT_SHA}}"
           echo $SHORT_SHA
           echo "EOF"
+## Create artifact
       - run: echo "It's all in the game" > thegame.txt 
+## Publish artifact
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v2.3.0
         with:
@@ -26,7 +25,4 @@ jobs:
           path: thegame.txt
 
 
-# build
-## Create artifact
-## Publish artifact
 # https://github.com/13013SwagR/hello-world/suites/4645262316/artifacts/126000027
