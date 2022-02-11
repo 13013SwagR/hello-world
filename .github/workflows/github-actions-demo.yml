@@ -10,19 +10,19 @@ jobs:
           date '+%FT%H%M%S%z'
           echo "SHORT_SHA=$(echo ${GITHUB_SHA} | cut -c1-7)" >> $GITHUB_ENV
           echo "DATE=$(date '+%FT%H%M%S%z')" >> $GITHUB_ENV
-          echo "${{env.DATE}}"
-          echo $DATE
+          echo "${{env.SHORT_SHA}}"
+          echo $SHORT_SHA
           echo "EOF"
       - name: read date
         run: |
-          echo "${{env.DATE}}"
-          echo $DATE
+          echo "${{env.SHORT_SHA}}"
+          echo $SHORT_SHA
           echo "EOF"
       - run: echo "It's all in the game" > thegame.txt 
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v2.3.0
         with:
-          name: my-build-artifact-${{ github.shortsha }}-${{env.DATE}}
+          name: my-build-artifact-${{env.SHORT_SHA}}-${{env.DATE}}
           path: thegame.txt
 
 
