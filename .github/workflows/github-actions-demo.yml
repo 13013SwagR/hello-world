@@ -8,7 +8,7 @@ jobs:
       - name: set date
         run: |
           date '+%FT%H%M%S%z'
-          echo ${GITHUB_SHA}
+          echo "SHORT_SHA=$(echo ${GITHUB_SHA} | cut -c1-7)" >> $GITHUB_ENV
           echo "DATE=$(date '+%FT%H%M%S%z')" >> $GITHUB_ENV
           echo "${{env.DATE}}"
           echo $DATE
