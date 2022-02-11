@@ -7,9 +7,9 @@ jobs:
       - uses: actions/checkout@v2
       - name: set date
         run: |
-          date -I
+          date '+%FT%T%z'
           echo ${GITHUB_SHA}
-          echo "DATE=$(date -I)" >> $GITHUB_ENV
+          echo "DATE=$(date '+%FT%T%z')" >> $GITHUB_ENV
           echo "${{env.DATE}}"
           echo $DATE
           echo "EOF"
@@ -22,7 +22,7 @@ jobs:
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v2.3.0
         with:
-          name: my-build-artifact-{{ github.sha}}
+          name: my-build-artifact-{{ github.sha }}-
           path: thegame.txt
 
 
