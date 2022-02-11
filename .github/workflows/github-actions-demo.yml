@@ -11,7 +11,7 @@ jobs:
           # echo ${github_sha}
           echo ${GITHUB_SHA}
           echo "DATE=$(date -I)" >> $GITHUB_ENV
-          echo ${{env.DATE}}
+          echo ${{env}}
           echo $GITHUB_ENV
           echo "EOF"
       - run: echo "It's all in the game" > thegame.txt 
