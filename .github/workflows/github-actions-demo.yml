@@ -34,15 +34,22 @@ jobs:
     needs: [build-hello-world, build_number]
     runs-on: ubuntu-latest
     steps:
+    # Download all build artifacts and put in proper foders as per standard 
     - name: Download a Build Artifact
       uses: actions/download-artifact@v2.1.0
       with:
         name: $artifact_name-${{ needs.build_number.outputs.build_number }}
-    - name: Display structure of downloaded files
-      run: ls -R
-    - uses: ncipollo/release-action@v1
-      with:
-        tag: 0.0.0
+    # Pull all git tags/releases
+    # Generate new semver compliant version
+    - name: Download semver-tool
+      run: |
+        wget -O semver \
+          https://raw.githubusercontent.com/fsaintjacques/semver-tool/master/src/semver
+        chmod +x semver
+        ./semver --version
+    # - uses: ncipollo/release-action@v1
+    #   with:
+    #     tag: 0.0.0
 
 
 # https://github.com/13013SwagR/hello-world/suites/4645262316/artifacts/126000027
