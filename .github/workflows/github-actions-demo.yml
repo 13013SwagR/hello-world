@@ -7,7 +7,7 @@ jobs:
   build_number:
     runs-on: ubuntu-latest
     outputs:
-      build_number: ${{ steps.step1.outputs.name }}
+      build_number: ${{ steps.step1.outputs.BUILD_NUMBER }}
     steps:
       - name: Generate BUILD_NUMBER
         id: step1
