@@ -4,7 +4,7 @@ env:
   artifact_name: theGame-artifact
 jobs:
 # build
-  build-number:
+  build_number:
     runs-on: ubuntu-latest
     outputs:
       build_number: ${{ steps.step1.outputs.name }}
@@ -24,7 +24,7 @@ jobs:
       - name: Validate Artifact name
         run: echo $artifact_name-
       - name: Validate build number
-        run: echo ${{ needs.build-number.outputs.build_number}}
+        run: echo ${{ needs.build_number.outputs.build_number}}
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v2.3.0
         with:
