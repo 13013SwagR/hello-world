@@ -31,7 +31,7 @@ jobs:
           name: $artifact_name-${{ needs.build_number.outputs.build_number }}
           path: thegame.txt
   release-hello-world:
-    needs: build-hello-world
+    needs: [build-hello-world, build_number]
     runs-on: ubuntu-latest
     steps:
     - name: Download a Build Artifact
