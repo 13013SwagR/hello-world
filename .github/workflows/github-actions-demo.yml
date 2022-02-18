@@ -22,6 +22,12 @@ jobs:
   release-hello-world:
     runs-on: ubuntu-latest
     steps:
+    - name: Download a Build Artifact
+      uses: actions/download-artifact@v2.1.0
+      with:
+        name: theGame-artifact-${{env.BUILD_NUMBER}}
+    - name: Display structure of downloaded files
+      run: ls -R
     - uses: ncipollo/release-action@v1
       with:
         tag: 0.0.0
