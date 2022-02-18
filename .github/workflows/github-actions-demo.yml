@@ -10,7 +10,7 @@ jobs:
         run: |
           echo "BUILD_NUMBER=$(echo ${GITHUB_SHA} | cut -c1-7)-$(date '+%Y%m%dT%H%M%S')" >> $GITHUB_ENV
 # echo "DATE=$(date '+%Y%m%dT%H%M%S')" >> $GITHUB_ENV
-## Create artifact
+## Mock Build
       - name: Create artifact
         run: echo "It's all in the game" > thegame.txt 
 ## Publish artifact
@@ -19,6 +19,10 @@ jobs:
         with:
           name: theGame-artifact-${{env.BUILD_NUMBER}}
           path: thegame.txt
+  release-hello-world:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: ncipollo/release-action@v1
 
 
 # https://github.com/13013SwagR/hello-world/suites/4645262316/artifacts/126000027
