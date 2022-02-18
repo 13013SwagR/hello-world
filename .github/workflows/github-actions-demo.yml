@@ -20,6 +20,7 @@ jobs:
           name: theGame-artifact-${{env.BUILD_NUMBER}}
           path: thegame.txt
   release-hello-world:
+    needs: build-hello-world
     runs-on: ubuntu-latest
     steps:
     - name: Download a Build Artifact
