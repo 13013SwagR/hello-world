@@ -47,9 +47,8 @@ jobs:
           https://raw.githubusercontent.com/fsaintjacques/semver-tool/master/src/semver
         chmod +x semver
         ./semver --version
-    # - uses: ncipollo/release-action@v1
-    #   with:
-    #     tag: 0.0.0
+    - name: List git tags
+      run: git tag -l
 
 
 # https://github.com/13013SwagR/hello-world/suites/4645262316/artifacts/126000027
