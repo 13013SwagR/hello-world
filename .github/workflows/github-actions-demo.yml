@@ -41,14 +41,35 @@ jobs:
         name: $artifact_name-${{ needs.build_number.outputs.build_number }}
     # Pull all git tags/releases
     # Generate new semver compliant version
-    - name: Download semver-tool
-      run: |
-        wget -O semver \
-          https://raw.githubusercontent.com/fsaintjacques/semver-tool/master/src/semver
-        chmod +x semver
-        ./semver --version
-    - name: List git tags
-      run: git tag -l
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    - name: Generate next version
+      id: new_version
+      uses: paulhatch/semantic-version@v4.0.2
+      with:
+        # The prefix to use to identify tags
+        tag_prefix: ""
+        major_pattern: "(MAJOR)"
+        minor_pattern: "(MINOR)"
+        format: "${major}.${minor}.${patch}-prerelease${increment}"
+        # change_path: "src/my-service"
+        # Named version, will be used as suffix for name version tag
+        namespace: jello-world
+        short_tags: false
+    - name: Show output version
+      run: ${{ steps.new_version.outputs.* }}
+        # If this is set to true, *every* commit will be treated as a new version.
+        # bump_each_commit: false
+    # - name: Download semver-tool
+    #   run: |
+    #     wget -O semver \
+    #       https://raw.githubusercontent.com/fsaintjacques/semver-tool/master/src/semver
+    #     chmod +x semver
+    #     ./semver --version
+    # - name: List git tags
+    #   run: git tag -l
 
 
 # https://github.com/13013SwagR/hello-world/suites/4645262316/artifacts/126000027
