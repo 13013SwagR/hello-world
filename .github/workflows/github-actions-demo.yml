@@ -59,9 +59,17 @@ jobs:
         namespace: jello-world
         short_tags: false
     - name: Show output version
-      run: echo ${{ steps.new_version.outputs.* }}
-        # If this is set to true, *every* commit will be treated as a new version.
-        # bump_each_commit: false
+      run: |
+        echo major ${{ steps.new_version.outputs.major }}
+        echo minor ${{ steps.new_version.outputs.minor }}
+        echo patch ${{ steps.new_version.outputs.patch }}
+        echo increment ${{ steps.new_version.outputs.increment }}
+        echo version ${{ steps.new_version.outputs.version }}
+        echo version_tag ${{ steps.new_version.outputs.version_tag }}
+        echo changed ${{ steps.new_version.outputs.changed }}
+
+    # If this is set to true, *every* commit will be treated as a new version.
+    # bump_each_commit: false
     # - name: Download semver-tool
     #   run: |
     #     wget -O semver \
