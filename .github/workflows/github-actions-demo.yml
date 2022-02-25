@@ -53,10 +53,10 @@ jobs:
         tag_prefix: ""
         major_pattern: "(MAJOR)"
         minor_pattern: "(MINOR)"
-        format: "${major}.${minor}.${patch}-prerelease${increment}+${namespace}-"
+        format: "${major}.${minor}.${patch}-prerelease${increment}+${{ needs.build_number.outputs.build_number }}"
         # change_path: "src/my-service"
         # Named version, will be used as suffix for name version tag
-        namespace: jello-world
+        # namespace: jello-world
         short_tags: false
     - name: Show output version
       run: |
