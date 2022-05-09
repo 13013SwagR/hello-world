@@ -30,7 +30,7 @@ jobs:
         major_pattern: |
           "^((build|ci|docs|feat|fix|perf|refactor|test)(\([a-z 0-9,.\-]+\))?!: [\w \(\),:.;\-#&']+|\nBREAKING CHANGES: [\w \(\),:.;\-#&']+)$"
         minor_pattern: |
-          "^(feat)(\([a-z 0-9,.\-]+\))?!?: [\w \(\),:.;\-#&']+$"
+          "(^(feat)(\([a-z 0-9,.\-]+\))?!?: [\w \(\),:.;\-#&']+$)"
         format: "${major}.${minor}.${patch}-prerelease.${increment}+${{ needs.build_number.outputs.build_number }}"
         short_tags: false
     - name: Show output version
