@@ -3,44 +3,11 @@ on: [push]
 env:
   artifact_name: theGame-artifact
 jobs:
-##### build ####################################################################################################
-  build_number:
-    runs-on: ubuntu-latest
-    outputs:
-      build_number: ${{ steps.step1.outputs.BUILD_NUMBER }}
-    steps:
-      - name: Generate BUILD_NUMBER
-        id: step1
-        run: |
-          echo "::set-output name=BUILD_NUMBER::$(echo ${GITHUB_SHA} | cut -c1-7)-$(date '+%Y%m%dT%H%M%S')"
-  build-hello-world:
-    runs-on: ubuntu-latest
-    needs: build_number
-    steps:
-      - uses: actions/checkout@v2
-      - name: Create artifact
-        run: echo "It's all in the game" > thegame.txt 
-      - name: Validate Artifact name
-        run: echo $artifact_name-
-      - name: Validate build number
-        run: echo ${{ needs.build_number.outputs.build_number }}
-      - name: Upload a Build Artifact
-        if: ${{ !env.ACT }}
-        uses: actions/upload-artifact@v2.3.0
-        with:
-          name: $artifact_name-${{ needs.build_number.outputs.build_number }}
-          path: thegame.txt
 ##### release ##################################################################################################
   release-hello-world:
     needs: [build-hello-world, build_number]
     runs-on: ubuntu-latest
     steps:
-#    Download all build artifacts and put in proper foders as per standard 
-    - name: Download a Build Artifact
-      if: ${{ !env.ACT }}
-      uses: actions/download-artifact@v2.1.0
-      with:
-        name: $artifact_name-${{ needs.build_number.outputs.build_number }}
     # Pull all git tags/releases
     # Generate new semver compliant version
     - name: Checkout
