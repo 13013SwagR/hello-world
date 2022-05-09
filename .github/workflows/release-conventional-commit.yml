@@ -1,11 +1,18 @@
-name: learn-github-actions
+name: release-conventional-commit
 on: [push]
-env:
-  artifact_name: theGame-artifact
 jobs:
+  build_number:
+    runs-on: ubuntu-latest
+    outputs:
+      build_number: ${{ steps.step1.outputs.BUILD_NUMBER }}
+    steps:
+      - name: Generate BUILD_NUMBER
+        id: step1
+        run: |
+          echo "::set-output name=BUILD_NUMBER::$(echo ${GITHUB_SHA} | cut -c1-7)-$(date '+%Y%m%dT%H%M%S')"
 ##### release ##################################################################################################
-  release-hello-world:
-    needs: [build-hello-world, build_number]
+  release-test:
+    needs: [build_number]
     runs-on: ubuntu-latest
     steps:
     # Pull all git tags/releases
