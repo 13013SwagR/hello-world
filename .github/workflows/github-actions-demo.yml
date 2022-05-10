@@ -69,7 +69,7 @@ jobs:
       ## Action configuration
         allowUpdates: false
         artifactErrorsFailBuild: true
-        commit: ${GITHUB_SHA} # current commit
+        # commit: ${GITHUB_SHA} # current commit
         draft: false
         name: Release ${{ steps.new_version.outputs.version_tag }}+${{ needs.build_number.outputs.build_number }} # name of the release
         replacesArtifacts: true
