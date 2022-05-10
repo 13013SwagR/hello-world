@@ -1,5 +1,9 @@
 name: release-conventional-commit
-on: [push]
+on:
+ push:
+    branches:
+      - 'never/**'
+
 jobs:
   build_number:
     runs-on: ubuntu-latest
@@ -33,6 +37,8 @@ jobs:
           /^(feat)(\([a-z 0-9,.\-]+\))?!?: [\w \(\),:.;\-#&']+$/
         format: "${major}.${minor}.${patch}-prerelease.${increment}+${{ needs.build_number.outputs.build_number }}"
         short_tags: false
+
+ #### publish ############################################
     - name: Show output version
       run: |
         echo major ${{ steps.new_version.outputs.major }}
@@ -42,8 +48,7 @@ jobs:
         echo version ${{ steps.new_version.outputs.version }}
         echo version_tag ${{ steps.new_version.outputs.version_tag }}
         echo changed ${{ steps.new_version.outputs.changed }}
- #### publish ############################################
- # Create Github release with assets/artifacts
+
  # Publishing of artifact could be done separatly 
 
 

@@ -32,15 +32,12 @@ jobs:
           path: thegame.txt
 ##### release ##################################################################################################
   release-hello-world:
-    needs: [build-hello-world, build_number]
+    permissions:
+      contents: write
+##### release ##################################################################################################
+    needs: [build_number]
     runs-on: ubuntu-latest
     steps:
-#    Download all build artifacts and put in proper foders as per standard 
-    - name: Download a Build Artifact
-      if: ${{ !env.ACT }}
-      uses: actions/download-artifact@v2.1.0
-      with:
-        name: $artifact_name-${{ needs.build_number.outputs.build_number }}
     # Pull all git tags/releases
     # Generate new semver compliant version
     - name: Checkout
@@ -54,20 +51,33 @@ jobs:
         # The prefix to use to identify tags
         tag_prefix: ""
         major_pattern: |
-          "^((build|ci|docs|feat|fix|perf|refactor|test)(\([a-z 0-9,.\-]+\))?!: [\w \(\),:.;\-#&']+|\nBREAKING CHANGES: [\w \(\),:.;\-#&']+)$"
+          /^((build|ci|docs|feat|fix|perf|refactor|test)(\([a-z 0-9,.\-]+\))?!: [\w \(\),:.;\-#&']+|\nBREAKING CHANGES: [\w \(\),:.;\-#&']+)$/
         minor_pattern: |
-          "^(feat)(\([a-z 0-9,.\-]+\))?!?: [\w \(\),:.;\-#&']+$"
+          /^(feat)(\([a-z 0-9,.\-]+\))?!?: [\w \(\),:.;\-#&']+$/
         format: "${major}.${minor}.${patch}-prerelease.${increment}+${{ needs.build_number.outputs.build_number }}"
         short_tags: false
-    - name: Show output version
-      run: |
-        echo major ${{ steps.new_version.outputs.major }}
-        echo minor ${{ steps.new_version.outputs.minor }}
-        echo patch ${{ steps.new_version.outputs.patch }}
-        echo increment ${{ steps.new_version.outputs.increment }}
-        echo version ${{ steps.new_version.outputs.version }}
-        echo version_tag ${{ steps.new_version.outputs.version_tag }}
-        echo changed ${{ steps.new_version.outputs.changed }}
+    - name: Install name generator
+      run: go install github.com/lzap/deagon@latest
+    - name: Generate name 
+      run: go install github.com/lzap/deagon@latest
+    - name: Create Github release
+      uses: ncipollo/release-action@v1
+      with:
+      ## Upload artifacts as per ccs spec
+        artifacts: "release.tar.gz,foo/*.txt"
+      ## Generate release notes as per conventional commits
+        bodyFile: "body.md"
+        token: ${{ secrets.GITHUB_TOKEN }}
+      ## Action configuration
+        allowUpdates: false
+        artifactErrorsFailBuild: true
+        commit: ${GITHUB_SHA} # current commit
+        draft: false
+        name: Release ${{ steps.new_version.outputs.version_tag }}+${{ needs.build_number.outputs.build_number }} # name of the release
+        replacesArtifacts: true
+        removeArtifacts: true
+        tag: ${{ steps.new_version.outputs.version_tag }} # version_tag
+
  #### publish ############################################
  # Create Github release with assets/artifacts
  # Publishing of artifact could be done separatly 
