@@ -56,8 +56,6 @@ jobs:
           /^(feat)(\([a-z 0-9,.\-]+\))?!?: [\w \(\),:.;\-#&']+$/
         format: "${major}.${minor}.${patch}-prerelease.${increment}+${{ needs.build_number.outputs.build_number }}"
         short_tags: false
-    - name: Install name generator
-      run: go install github.com/lzap/deagon@latest
     - name: Generate name 
       run: go install github.com/lzap/deagon@latest
     - name: Create Github release
