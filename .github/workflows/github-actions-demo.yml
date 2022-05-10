@@ -62,7 +62,7 @@ jobs:
       ## Upload artifacts as per ccs spec
         # artifacts: "release.tar.gz,foo/*.txt"
       ## Generate release notes as per conventional commits
-        bodyFile: "body.md"
+        # bodyFile: "body.md"
         token: ${{ secrets.GITHUB_TOKEN }}
       ## Action configuration
         allowUpdates: false
