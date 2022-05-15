@@ -9,6 +9,7 @@ jobs:
     outputs:
       build_number: ${{ steps.step1.outputs.BUILD_NUMBER }}
     steps:
+      - run: echo GITHUB
       - name: Generate BUILD_NUMBER
         id: step1
         run: |
