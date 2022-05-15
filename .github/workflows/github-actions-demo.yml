@@ -3,13 +3,17 @@ on: [push]
 env:
   artifact_name: theGame-artifact
 jobs:
+  dump:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dump context
+        uses: crazy-max/ghaction-dump-context@v1
 ##### build ####################################################################################################
   build_number:
     runs-on: ubuntu-latest
     outputs:
       build_number: ${{ steps.step1.outputs.BUILD_NUMBER }}
     steps:
-      - run: echo GITHUB
       - name: Generate BUILD_NUMBER
         id: step1
         run: |
