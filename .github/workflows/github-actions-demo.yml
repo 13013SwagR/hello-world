@@ -2,7 +2,7 @@ name: learn-github-actions
 on: [push]
 env:
   artifact_name: theGame-artifact
-  build_number: ${{ github.sha }}-${{ github.event.repository.updated_at}}
+  build_number: ${{ github.sha[0] }}-${{ github.event.repository.updated_at}}
 jobs:
   dump:
     runs-on: ubuntu-latest
