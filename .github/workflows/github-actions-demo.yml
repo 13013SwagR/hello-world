@@ -2,12 +2,14 @@ name: learn-github-actions
 on: [push]
 env:
   artifact_name: theGame-artifact
+  build_number: ${{ github.event.repository.updated_at}}
 jobs:
   dump:
     runs-on: ubuntu-latest
     steps:
-      - name: Dump context
-        uses: crazy-max/ghaction-dump-context@v1
+      # - name: Dump context
+      #   uses: crazy-max/ghaction-dump-context@v1
+    - run: echo "${GITHUB_build_number}"
 ##### build ####################################################################################################
   build_number:
     runs-on: ubuntu-latest
