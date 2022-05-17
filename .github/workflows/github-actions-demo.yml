@@ -2,47 +2,35 @@ name: learn-github-actions
 on: [push]
 env:
   artifact_name: theGame-artifact
-  build_number: ${{ github.sha.substring(0,7) }}-${{ github.event.repository.updated_at}}
 jobs:
-  dump:
-    runs-on: ubuntu-latest
-    steps:
-      # - name: Dump context
-      #   uses: crazy-max/ghaction-dump-context@v1
-    - run: echo "${GITHUB_build_number}"
 ##### build ####################################################################################################
-  build_number:
-    runs-on: ubuntu-latest
-    outputs:
-      build_number: ${{ steps.step1.outputs.BUILD_NUMBER }}
-    steps:
-      - name: Generate BUILD_NUMBER
-        id: step1
-        run: |
-          echo "::set-output name=BUILD_NUMBER::$(echo ${GITHUB_SHA} | cut -c1-7)-$(date '+%Y%m%dT%H%M%S')"
   build-hello-world:
     runs-on: ubuntu-latest
-    needs: build_number
     steps:
+      - name: Generate BUILD_NUMBER 
+        run: |
+          echo "BUILD_NUMBER=$(echo ${GITHUB_SHA} | cut -c1-7)-$(date '+%Y%m%dT%H%M%S')" >> $GITHUB_ENV
+    # echo "::set-output name=BUILD_NUMBER::$(echo ${GITHUB_SHA} | cut -c1-7)-${{ github.event.repository.updated_at}}"
       - uses: actions/checkout@v2
       - name: Create artifact
         run: echo "It's all in the game" > thegame.txt 
       - name: Validate Artifact name
         run: echo $artifact_name-
       - name: Validate build number
-        run: echo ${{ needs.build_number.outputs.build_number }}
+        run: echo $BUILD_NUMBER
       - name: Upload a Build Artifact
         if: ${{ !env.ACT }}
         uses: actions/upload-artifact@v2.3.0
         with:
-          name: $artifact_name-${{ needs.build_number.outputs.build_number }}
+          name: $artifact_name-$BUILD_NUMBER
           path: thegame.txt
+      
 ##### release ##################################################################################################
   release-hello-world:
     permissions:
       contents: write
 ##### release ##################################################################################################
-    needs: [build_number, build-hello-world]
+    needs: [build-hello-world]
     runs-on: ubuntu-latest
     steps:
     # Pull all git tags/releases
@@ -61,7 +49,7 @@ jobs:
           /^((build|ci|docs|feat|fix|perf|refactor|test)(\([a-z 0-9,.\-]+\))?!: [\w \(\),:.;\-#&']+|\nBREAKING CHANGES: [\w \(\),:.;\-#&']+)$/
         minor_pattern: |
           /^(feat)(\([a-z 0-9,.\-]+\))?!?: [\w \(\),:.;\-#&']+$/
-        format: "${major}.${minor}.${patch}-prerelease.${increment}+${{ needs.build_number.outputs.build_number }}"
+        format: "${major}.${minor}.${patch}-prerelease.${increment}+$BUILD_NUMBER"
         short_tags: false
     - name: Create tag 
       run: git tag ${{ steps.new_version.outputs.version_tag }} && git push --tags
@@ -78,7 +66,7 @@ jobs:
         artifactErrorsFailBuild: true
         # commit: ${GITHUB_SHA} # current commit
         draft: false
-        name: Release ${{ steps.new_version.outputs.version_tag }}+${{ needs.build_number.outputs.build_number }} # name of the release
+        name: Release ${{ steps.new_version.outputs.version_tag }}+$BUILD_NUMBER # name of the release
         replacesArtifacts: true
         removeArtifacts: true
         tag: ${{ steps.new_version.outputs.version_tag }}
