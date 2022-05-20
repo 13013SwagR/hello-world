@@ -58,8 +58,12 @@ jobs:
         format: "${major}.${minor}.${patch}-prerelease.${increment}+${{ needs.build.outputs.BUILD_NUMBER }}"
         short_tags: false
 
+    - name: Set release name with pattern <artifact_name>-<version_tag>+<commits_increment>-<build_number>
+      id: release_name
+      run: echo "::set-output name=RELEASE_NAME::${{ env.ARTIFACT_NAME }}-${{ steps.new_version.outputs.version_tag }}+${{ steps.new_version.outputs.increment }}-${{ needs.build.outputs.BUILD_NUMBER }}"
+
     - name: Tag artifact file
-      run: mv ${{ env.ARTIFACT_NAME }}-${{ needs.build.outputs.BUILD_NUMBER }}.yaml ${{ env.ARTIFACT_NAME }}-${{ steps.new_version.outputs.version_tag }}+${{ steps.new_version.outputs.increment }}-${{ needs.build.outputs.BUILD_NUMBER }}.yaml
+      run: mv ${{ env.ARTIFACT_NAME }}-${{ needs.build.outputs.BUILD_NUMBER }}.yaml ${{ steps.release_name.outputs.RELEASE_NAME }}.yaml
 
     - name: Create tag 
       if: ${{ !env.ACT }}
@@ -77,7 +81,7 @@ jobs:
       with:
       ## Upload artifacts as per ccs spec
         bodyFile: changelog.md
-        artifacts: "${{ env.ARTIFACT_NAME }}-${{ steps.new_version.outputs.version_tag }}+${{ needs.build.outputs.BUILD_NUMBER }}.yaml"
+        artifacts: "${{ steps.release_name.outputs.RELEASE_NAME }}.yaml"
         token: ${{ secrets.GITHUB_TOKEN }}
         allowUpdates: false
         artifactErrorsFailBuild: true 
