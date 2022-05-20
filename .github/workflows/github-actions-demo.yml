@@ -82,6 +82,7 @@ jobs:
         replacesArtifacts: true
         removeArtifacts: true
         tag: ${{ steps.new_version.outputs.version_tag }}
+        generateReleaseNotes: true
 
       ## Generate release notes as per conventional commits
  #### publish ############################################
