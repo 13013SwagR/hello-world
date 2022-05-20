@@ -63,11 +63,11 @@ jobs:
         short_tags: false
 
     - name: Create tag 
-      if: ${{ !env.ACT && false }}
+      if: ${{ !env.ACT }}
       run: git tag ${{ steps.new_version.outputs.version_tag }} && git push --tags
 
     - name: Create Github release
-      if: ${{ !env.ACT && false }}
+      if: ${{ !env.ACT }}
       uses: ncipollo/release-action@v1
       with:
       ## Upload artifacts as per ccs spec
