@@ -73,7 +73,7 @@ jobs:
       run: npm install -g git-release-notes
     
     - name: Generate release notes
-      run: git-release-notes $(git tag -l --sort=-version:refname | head -n 2 | tail -1)..${{ steps.new_version.outputs.version_tag }} markdown > changelog.md
+      run: git-release-notes $(git tag -l --sort=-version:refname | head -n 2 | tail -1 | grep . --color=never || git rev-list --max-parents=0 HEAD)..${{ steps.new_version.outputs.version_tag }} markdown > changelog.md
   
     - name: Create Github release
       if: ${{ !env.ACT }}
