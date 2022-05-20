@@ -80,7 +80,7 @@ jobs:
       uses: ncipollo/release-action@v1
       with:
         bodyFile: changelog.md
-        artifacts: "${{ steps.release_version.outputs.RELEASE_VERSION }}.yaml"
+        artifacts: "${{ env.ARTIFACT_NAME }}-${{ steps.release_version.outputs.RELEASE_VERSION }}.yaml"
         token: ${{ secrets.GITHUB_TOKEN }}
         allowUpdates: false
         artifactErrorsFailBuild: true 
