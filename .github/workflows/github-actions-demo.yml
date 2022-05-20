@@ -22,7 +22,7 @@ jobs:
         if: ${{ !env.ACT }}
         uses: actions/upload-artifact@v2.3.0
         with:
-          name: $ARTIFACT_NAME-$BUILD_NUMBER.yaml
+          name: ${{ env.ARTIFACT_NAME}}-${{ env.BUILD_NUMBER}}.yaml
           path: ${{ env.ARTIFACT_NAME}}-${{ env.BUILD_NUMBER}}.yaml
       
 ##### release ##################################################################################################
@@ -32,6 +32,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build]
     steps:
+    - name: Dump file system context
+      run: ls -al
     - name: Pull all git tags/releases
       uses: actions/checkout@v2
       with:
@@ -52,7 +54,7 @@ jobs:
       run: git tag ${{ steps.new_version.outputs.version_tag }} && git push --tags
 
     - name: Create Github release
-      if: ${{ !env.ACT }}
+      if: ${{ !env.ACT && false }}
       uses: ncipollo/release-action@v1
       with:
       ## Upload artifacts as per ccs spec
