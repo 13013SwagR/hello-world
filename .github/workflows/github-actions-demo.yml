@@ -86,7 +86,7 @@ jobs:
         allowUpdates: false
         artifactErrorsFailBuild: true 
         draft: false
-        name: Release ${{ steps.release_name.outputs.RELEASE_NAME }}+${{ needs.build.outputs.BUILD_NUMBER }} # name of the release
+        name: Release ${{ steps.release_name.outputs.RELEASE_NAME }} # name of the release
         replacesArtifacts: false
         removeArtifacts: false
         tag: ${{ steps.new_version.outputs.version_tag }}
