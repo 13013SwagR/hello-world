@@ -41,12 +41,10 @@ jobs:
       with:
         fetch-depth: 0
 
-
     - name: Download artifact ${{ env.ARTIFACT_NAME }}-${{ needs.build.outputs.BUILD_NUMBER }}.yaml
       uses: actions/download-artifact@v3
       with:
         name: ${{ env.ARTIFACT_NAME }}-${{ needs.build.outputs.BUILD_NUMBER }}.yaml
-
 
     - name: Generate new semver compliant version
       id: new_version
@@ -62,27 +60,23 @@ jobs:
 
     - name: Tag artifact file
       run: mv ${{ env.ARTIFACT_NAME }}-${{ needs.build.outputs.BUILD_NUMBER }}.yaml ${{ env.ARTIFACT_NAME }}-${{ steps.new_version.outputs.version_tag }}+${{ needs.build.outputs.BUILD_NUMBER }}.yaml
-    - name: Dump file system context
-      run: ls -al
+
     - name: Create tag 
       if: ${{ !env.ACT }}
       run: git tag ${{ steps.new_version.outputs.version_tag }} && git push --tags
 
-    - name: "Build Changelog as per conventional commits"
-      id: build_changelog
-      uses: mikepenz/release-changelog-builder-action@v3
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        toTag: ${{ steps.new_version.outputs.version_tag }}
-        ignorePreReleases: "true"
-
+    - name: Install git-release-notes
+      run: npm install -g git-release-notes
+    
+    - name: Generate release notes
+      run: git-release-notes $(git tag -l --sort=-version:refname | head -n 2 | tail -1)..${{ steps.new_version.outputs.version_tag }} markdown > changelog.md
+  
     - name: Create Github release
       if: ${{ !env.ACT }}
       uses: ncipollo/release-action@v1
       with:
       ## Upload artifacts as per ccs spec
-        body: ${{steps.build_changelog.outputs.changelog}}
+        bodyFile: changelog.md
         artifacts: "${{ env.ARTIFACT_NAME }}-${{ steps.new_version.outputs.version_tag }}+${{ needs.build.outputs.BUILD_NUMBER }}.yaml"
         token: ${{ secrets.GITHUB_TOKEN }}
         allowUpdates: false
