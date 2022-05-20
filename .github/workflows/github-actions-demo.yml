@@ -65,16 +65,16 @@ jobs:
     - name: Tag artifact file
       run: mv ${{ env.ARTIFACT_NAME }}-${{ needs.build.outputs.BUILD_NUMBER }}.yaml ${{ env.ARTIFACT_NAME }}-${{ steps.release_version.outputs.RELEASE_VERSION }}.yaml
 
+    - name: Check if tag/release exists
+      id: release_exists
+      run: echo "::set-output name=RELEASE_EXISTS::$(git tag -l)"
+    
     - name: Create tag 
       if: ${{ !env.ACT }}
       run: git tag ${{ steps.new_version.outputs.version_tag }} && git push --tags
 
     - name: Install git-release-notes
       run: npm install -g git-release-notes
-    
-    - name: Check if tag/release exists
-      id: release_exists
-      run: echo "::set-output name=RELEASE_EXISTS::$(git tag -l)"
     
     - name: Generate release notes for the first release
       if: ${{ !steps.release_exists.outputs.RELEASE_EXISTS }}
