@@ -76,11 +76,11 @@ jobs:
         artifacts: "${{ env.ARTIFACT_NAME }}-${{ steps.new_version.outputs.version_tag }}+${{ needs.build.outputs.BUILD_NUMBER }}.yaml"
         token: ${{ secrets.GITHUB_TOKEN }}
         allowUpdates: false
-        artifactErrorsFailBuild: true
+        artifactErrorsFailBuild: true 
         draft: false
         name: Release ${{ steps.new_version.outputs.version_tag }}+${{ needs.build.outputs.BUILD_NUMBER }} # name of the release
-        replacesArtifacts: true
-        removeArtifacts: true
+        replacesArtifacts: false
+        removeArtifacts: false
         tag: ${{ steps.new_version.outputs.version_tag }}
         generateReleaseNotes: true
 
