@@ -16,6 +16,8 @@ jobs:
     # echo "::set-output name=BUILD_NUMBER::$(echo ${GITHUB_SHA} | cut -c1-7)-${{ github.event.repository.updated_at}}"
       - name: Create artifact
         run: python3 build.py $ARTIFACT_NAME-$BUILD_NUMBER
+      - name: validate build artifact creation
+        run: ls -al 
       - name: Upload a Build Artifact
         if: ${{ !env.ACT }}
         uses: actions/upload-artifact@v2.3.0
