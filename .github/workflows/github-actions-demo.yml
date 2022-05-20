@@ -22,8 +22,8 @@ jobs:
         if: ${{ !env.ACT }}
         uses: actions/upload-artifact@v2.3.0
         with:
-          name: $ARTIFACT_NAME-$BUILD_NUMBER
-          path: $ARTIFACT_NAME-$BUILD_NUMBER
+          name: $ARTIFACT_NAME-$BUILD_NUMBER.yaml
+          path: $ARTIFACT_NAME-$BUILD_NUMBER.yaml
       
 ##### release ##################################################################################################
   release:
@@ -56,7 +56,7 @@ jobs:
       uses: ncipollo/release-action@v1
       with:
       ## Upload artifacts as per ccs spec
-        artifacts: "$ARTIFACT_NAME-$BUILD_NUMBER"
+        artifacts: "$ARTIFACT_NAME-$.yaml"
         token: ${{ secrets.GITHUB_TOKEN }}
         allowUpdates: false
         artifactErrorsFailBuild: true
