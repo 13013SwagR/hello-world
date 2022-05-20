@@ -72,8 +72,17 @@ jobs:
     - name: Install git-release-notes
       run: npm install -g git-release-notes
     
+    - name: Check if tag/release exists
+      id: release_exists
+      run: echo "::set-output name=RELEASE_EXISTS::$(git tag -l)"
+    
+    - name: Generate release notes for the first release
+      if: ${{ !steps.release_exists.outputs.RELEASE_EXISTS }}
+      run: git-release-notes $(git rev-list --max-parents=0 HEAD)..$(git log -1 --pretty=format:"%H") markdown > changelog.md
+
     - name: Generate release notes
-      run: git-release-notes $(git tag -l --sort=-version:refname | head -n 2 | tail -1 | grep . --color=never || git rev-list --max-parents=0 HEAD)..${{ steps.new_version.outputs.version_tag }} markdown > changelog.md
+      if: ${{ steps.release_exists.outputs.RELEASE_EXISTS }}
+      run: git-release-notes $(git tag -l --sort=-version:refname | head -n 2 | tail -1 )..${{ steps.new_version.outputs.version_tag }} markdown > changelog.md
   
     - name: Create Github release
       if: ${{ !env.ACT }}
