@@ -15,18 +15,19 @@ jobs:
       - name: Generate BUILD_NUMBER
         id: build_number 
         run: |
-          echo "BUILD_NUMBER=$(echo ${GITHUB_SHA} | cut -c1-7)-$(date '+%Y%m%dT%H%M%S')" >> $GITHUB_ENV
+          echo "::set-output name=BUILD_NUMBER::$(echo ${GITHUB_SHA} | cut -c1-7)-$(date '+%Y%m%dT%H%M%S')"
+    # echo "BUILD_NUMBER=$(echo ${GITHUB_SHA} | cut -c1-7)-$(date '+%Y%m%dT%H%M%S')" >> $GITHUB_ENV
     # echo "::set-output name=BUILD_NUMBER::$(echo ${GITHUB_SHA} | cut -c1-7)-${{ github.event.repository.updated_at}}"
       - name: Create artifact
-        run: python3 build.py $ARTIFACT_NAME-$BUILD_NUMBER
+        run: python3 build.py $ARTIFACT_NAME-${{ steps.build_number.outputs.BUILD_NUMBER }}
       - name: validate build artifact creation
         run: ls -al 
       - name: Upload a Build Artifact
         if: ${{ !env.ACT }}
         uses: actions/upload-artifact@v2.3.0
         with:
-          name: ${{ env.ARTIFACT_NAME}}-${{ env.BUILD_NUMBER}}.yaml
-          path: ${{ env.ARTIFACT_NAME}}-${{ env.BUILD_NUMBER}}.yaml
+          name: ${{ env.ARTIFACT_NAME}}-${{ steps.build_number.outputs.BUILD_NUMBER }}.yaml
+          path: ${{ env.ARTIFACT_NAME}}-${{ steps.build_number.outputs.BUILD_NUMBER }}.yaml
       
 ##### release ##################################################################################################
   release:
@@ -41,10 +42,10 @@ jobs:
         fetch-depth: 0
 
 
-    - name: Download artifact $ARTIFACT_NAME-$BUILD_NUMBER.yaml
+    - name: Download artifact $ARTIFACT_NAME-${{ needs.build.outputs.BUILD_NUMBER }}.yaml
       uses: actions/download-artifact@v3
       with:
-        name: $ARTIFACT_NAME-$BUILD_NUMBER.yaml
+        name: $ARTIFACT_NAME-${{ needs.build.outputs.BUILD_NUMBER }}.yaml
 
     - name: Dump file system context
       run: ls -al
@@ -58,7 +59,7 @@ jobs:
           /^((build|ci|docs|feat|fix|perf|refactor|test)(\([a-z 0-9,.\-]+\))?!: [\w \(\),:.;\-#&']+|\nBREAKING CHANGES: [\w \(\),:.;\-#&']+)$/
         minor_pattern: |
           /^(feat)(\([a-z 0-9,.\-]+\))?!?: [\w \(\),:.;\-#&']+$/
-        format: "${major}.${minor}.${patch}-prerelease.${increment}+$BUILD_NUMBER"
+        format: "${major}.${minor}.${patch}-prerelease.${increment}+${{ needs.build.outputs.BUILD_NUMBER }}"
         short_tags: false
 
     - name: Create tag 
@@ -75,7 +76,7 @@ jobs:
         allowUpdates: false
         artifactErrorsFailBuild: true
         draft: false
-        name: Release ${{ steps.new_version.outputs.version_tag }}+$BUILD_NUMBER # name of the release
+        name: Release ${{ steps.new_version.outputs.version_tag }}+${{ needs.build.outputs.BUILD_NUMBER }} # name of the release
         replacesArtifacts: true
         removeArtifacts: true
         tag: ${{ steps.new_version.outputs.version_tag }}
