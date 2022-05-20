@@ -23,7 +23,7 @@ jobs:
         uses: actions/upload-artifact@v2.3.0
         with:
           name: $ARTIFACT_NAME-$BUILD_NUMBER.yaml
-          path: $ARTIFACT_NAME-$BUILD_NUMBER.yaml
+          path: ${ARTIFACT_NAME}-${BUILD_NUMBER}.yaml
       
 ##### release ##################################################################################################
   release:
