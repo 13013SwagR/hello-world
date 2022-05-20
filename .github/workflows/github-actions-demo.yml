@@ -67,13 +67,22 @@ jobs:
     - name: Create tag 
       if: ${{ !env.ACT }}
       run: git tag ${{ steps.new_version.outputs.version_tag }} && git push --tags
-      ## Generate release notes as per conventional commits
 
+    - name: "Build Changelog as per conventional commits"
+      id: build_changelog
+      uses: mikepenz/release-changelog-builder-action@{latest-release}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        toTag: ${{ steps.new_version.outputs.version_tag }}
+        ignorePreReleases: "true"
+        
     - name: Create Github release
       if: ${{ !env.ACT }}
       uses: ncipollo/release-action@v1
       with:
       ## Upload artifacts as per ccs spec
+        body: ${{steps.build_changelog.outputs.changelog}}
         artifacts: "${{ env.ARTIFACT_NAME }}-${{ steps.new_version.outputs.version_tag }}+${{ needs.build.outputs.BUILD_NUMBER }}.yaml"
         token: ${{ secrets.GITHUB_TOKEN }}
         allowUpdates: false
