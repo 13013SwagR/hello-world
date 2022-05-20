@@ -67,6 +67,7 @@ jobs:
     - name: Create tag 
       if: ${{ !env.ACT }}
       run: git tag ${{ steps.new_version.outputs.version_tag }} && git push --tags
+      ## Generate release notes as per conventional commits
 
     - name: Create Github release
       if: ${{ !env.ACT }}
@@ -84,7 +85,6 @@ jobs:
         tag: ${{ steps.new_version.outputs.version_tag }}
 
 
-      ## Generate release notes as per conventional commits
  #### publish ############################################
  # Create Github release with assets/artifacts
  # Publishing of artifact could be done separatly 
