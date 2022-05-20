@@ -79,7 +79,6 @@ jobs:
       if: ${{ !env.ACT }}
       uses: ncipollo/release-action@v1
       with:
-      ## Upload artifacts as per ccs spec
         bodyFile: changelog.md
         artifacts: "${{ steps.release_version.outputs.RELEASE_VERSION }}.yaml"
         token: ${{ secrets.GITHUB_TOKEN }}
@@ -93,7 +92,6 @@ jobs:
 
 
  #### publish ############################################
- # Create Github release with assets/artifacts
  # Publishing of artifact could be done separatly 
 
 
