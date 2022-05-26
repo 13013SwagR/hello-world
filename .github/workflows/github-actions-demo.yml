@@ -116,7 +116,6 @@ jobs:
     - name: Download artifact && checksum and validate artifact
       uses: dsaltares/fetch-gh-release-asset@1.0.0
       with:
-        repo: 'dsaltares/godot-wild-jam-18'
         version: 'tags/${{ needs.release.outputs.VERSION_TAG }}'
         file: '${{ env.ARTIFACT_NAME }}-${{ needs.release.outputs.RELEASE_VERSION }}.yaml'
         token: ${{ secrets.GITHUB_TOKEN }}
