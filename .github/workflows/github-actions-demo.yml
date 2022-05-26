@@ -114,11 +114,17 @@ jobs:
     steps:
     ## TODO implement checksum validation
     - name: Download artifact && checksum and validate artifact
-      uses: dsaltares/fetch-gh-release-asset@1.0.0
+      uses: dsaltares/fetch-gh-release-asset@1
       with:
         version: 'tags/${{ needs.release.outputs.VERSION_TAG }}'
         file: '${{ env.ARTIFACT_NAME }}-${{ needs.release.outputs.RELEASE_VERSION }}.yaml'
         token: ${{ secrets.GITHUB_TOKEN }}
     - name: Create or update gist
-      run: ls -al
+      uses: exuanbo/actions-deploy-gist@v1
+      with:
+        token: ${{ secrets.HELLO_WORLD_GIST }}
+        gist_id: 077e59ab56b1fac4402711dc2c8b4ecb
+        gist_description: "Hello World example"
+        gist_file_name: ${{ env.ARTIFACT_NAME }}-${{ needs.release.outputs.RELEASE_VERSION }}.yaml
+        file_path: ${{ env.ARTIFACT_NAME }}-${{ needs.release.outputs.RELEASE_VERSION }}.yaml
 
