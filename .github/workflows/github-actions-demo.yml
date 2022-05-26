@@ -125,6 +125,6 @@ jobs:
         token: ${{ secrets.HELLO_WORLD_GIST }}
         gist_id: 077e59ab56b1fac4402711dc2c8b4ecb
         gist_description: "Hello World example"
-        gist_file_name: ${{ env.ARTIFACT_NAME }}-${{ needs.release.outputs.RELEASE_VERSION }}.yaml
+        gist_file_name: ${{ env.ARTIFACT_NAME }}-latest.yaml
         file_path: ${{ env.ARTIFACT_NAME }}-${{ needs.release.outputs.RELEASE_VERSION }}.yaml
 

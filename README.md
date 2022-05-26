@@ -3,7 +3,7 @@ CCS Implementation sandbox
 ```
 here is my build content
 here is my build content
-another test
+latest
 
 ```
 
