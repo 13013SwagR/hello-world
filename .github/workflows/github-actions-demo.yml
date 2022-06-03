@@ -136,7 +136,7 @@ jobs:
     - name: Tag Docker image
       if: ${{ !env.ACT }}
       run: |
-        REGISTRY_NAME="http://ghcr.io"
+        REGISTRY_NAME="https://ghcr.io"
         REPOSITORY=${{ github.actor }}/hello-world
         TAG_OLD=${{ env.ARTIFACT_NAME }}-${{ needs.build.outputs.BUILD_NUMBER }}
         TAG_NEW=${{ env.ARTIFACT_NAME }}-${{ steps.release_version.outputs.RELEASE_VERSION }}
