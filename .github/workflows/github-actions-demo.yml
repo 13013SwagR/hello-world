@@ -140,9 +140,10 @@ jobs:
         REPOSITORY=${{ github.actor }}/hello-world
         TAG_OLD=${{ env.ARTIFACT_NAME }}-${{ steps.build_number.outputs.BUILD_NUMBER }}
         TAG_NEW=${{ env.ARTIFACT_NAME }}-${{ steps.release_version.outputs.RELEASE_VERSION }}
-        MANIFEST=$(curl -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://ghcr.io/v2/13013swagr/hello-world/manifests/heelo-world-0d7d9f2-20220603t132745" -L)
+        GHCR_TOKEN=$(echo ${{ secrets.GITHUB_TOKEN }} | base64)
+        MANIFEST=$(curl -H "Authorization: Bearer ${GHCR_TOKEN}" "https://ghcr.io/v2/13013swagr/hello-world/manifests/heelo-world-0d7d9f2-20220603t132745" -L)
         echo $MANIFEST
-        curl -X PUT -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" -H "Content-Type: ${CONTENT_TYPE}" -d "${MANIFEST}" "${REGISTRY_NAME}/${REPOSITORY}/manifests/${TAG_NEW}"
+        curl -X PUT -H "Authorization: Bearer ${GHCR_TOKEN}" -H "Content-Type: ${CONTENT_TYPE}" -d "${MANIFEST}" "${REGISTRY_NAME}/${REPOSITORY}/manifests/${TAG_NEW}"
 
  #### publish ############################################
  # Publishing of artifact could be done separatly 
