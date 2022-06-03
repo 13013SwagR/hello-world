@@ -135,14 +135,14 @@ jobs:
     - name: Tag Docker image
       if: ${{ !env.ACT }}
       run: |
-        REGISTRY_NAME="http://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@ghcr.io"
-        REPOSITORY=13013swagr/hello-world
+        REGISTRY_NAME="http://ghcr.io/v2"
+        REPOSITORY=${{ github.actor }}/hello-world
         TAG_OLD=${{ env.ARTIFACT_NAME }}-${{ steps.build_number.outputs.BUILD_NUMBER }}
         TAG_NEW=${{ env.ARTIFACT_NAME }}-${{ steps.release_version.outputs.RELEASE_VERSION }}
         CONTENT_TYPE="application/vnd.docker.distribution.manifest.v2+json"
-
-        MANIFEST=$(curl -H "Accept: ${CONTENT_TYPE}" "${REGISTRY_NAME}/v2/${REPOSITORY}/manifests/${TAG_OLD}")
-        curl -X PUT -H "Content-Type: ${CONTENT_TYPE}" -d "${MANIFEST}" "${REGISTRY_NAME}/v2/${REPOSITORY}/manifests/${TAG_NEW}"
+        curl -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" -H "Accept: ${CONTENT_TYPE}" "${REGISTRY_NAME}/${REPOSITORY}/manifests/${TAG_OLD}"
+        MANIFEST=$(curl -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" -H "Accept: ${CONTENT_TYPE}" "${REGISTRY_NAME}/${REPOSITORY}/manifests/${TAG_OLD}")
+        curl -X PUT -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" -H "Content-Type: ${CONTENT_TYPE}" -d "${MANIFEST}" "${REGISTRY_NAME}/${REPOSITORY}/manifests/${TAG_NEW}"
 
  #### publish ############################################
  # Publishing of artifact could be done separatly 
