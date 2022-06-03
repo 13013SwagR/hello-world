@@ -136,14 +136,16 @@ jobs:
     - name: Tag Docker image
       if: ${{ !env.ACT }}
       run: |
-        REGISTRY_NAME="http://ghcr.io/v2"
+        REGISTRY_NAME="http://ghcr.io/"
         REPOSITORY=${{ github.actor }}/hello-world
         TAG_OLD=${{ env.ARTIFACT_NAME }}-${{ steps.build_number.outputs.BUILD_NUMBER }}
         TAG_NEW=${{ env.ARTIFACT_NAME }}-${{ steps.release_version.outputs.RELEASE_VERSION }}
         GHCR_TOKEN=$(echo ${{ secrets.GITHUB_TOKEN }} | base64)
-        MANIFEST=$(curl -H "Authorization: Bearer ${GHCR_TOKEN}" "https://ghcr.io/v2/13013swagr/hello-world/manifests/heelo-world-0d7d9f2-20220603t132745" -L)
+        CONTENT_TYPE="application/vnd.docker.distribution.manifest.v2+json"
+        
+        MANIFEST=$(curl -H "Authorization: Bearer ${GHCR_TOKEN}" "$REGISTRY_NAME/v2/$REPOSITORY/manifests/$TAG_OLD")
         echo $MANIFEST
-        curl -X PUT -H "Authorization: Bearer ${GHCR_TOKEN}" -H "Content-Type: ${CONTENT_TYPE}" -d "${MANIFEST}" "${REGISTRY_NAME}/${REPOSITORY}/manifests/${TAG_NEW}"
+        curl -f -X PUT -H "Authorization: Bearer ${GHCR_TOKEN}" -H "Content-Type: ${CONTENT_TYPE}" -d "${MANIFEST}" "$REGISTRY_NAME/v2/$REPOSITORY/manifests/$TAG_NEW"
 
  #### publish ############################################
  # Publishing of artifact could be done separatly 
