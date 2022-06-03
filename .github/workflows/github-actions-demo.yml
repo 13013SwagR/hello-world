@@ -139,7 +139,7 @@ jobs:
         REGISTRY_NAME="https://ghcr.io"
         REPOSITORY=${{ github.actor }}/hello-world
         TAG_OLD=${{ env.ARTIFACT_NAME }}-${{ needs.build.outputs.BUILD_NUMBER }}
-        TAG_NEW=${{ env.ARTIFACT_NAME }}-${{ steps.release_version.outputs.RELEASE_VERSION }}
+        TAG_NEW=${{ env.ARTIFACT_NAME }}-${{ steps.new_version.outputs.version_tag }}
         GHCR_TOKEN=$(echo ${{ secrets.GITHUB_TOKEN }} | base64)
         CONTENT_TYPE="application/vnd.docker.distribution.manifest.v2+json"
         MANIFEST=$(curl -f -H "Authorization: Bearer ${GHCR_TOKEN}" "$REGISTRY_NAME/v2/$REPOSITORY/manifests/$TAG_OLD" -L)
