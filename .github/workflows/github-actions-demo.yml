@@ -140,8 +140,8 @@ jobs:
         TAG_OLD=${{ env.ARTIFACT_NAME }}-${{ steps.build_number.outputs.BUILD_NUMBER }}
         TAG_NEW=${{ env.ARTIFACT_NAME }}-${{ steps.release_version.outputs.RELEASE_VERSION }}
         CONTENT_TYPE="application/vnd.docker.distribution.manifest.v2+json"
-        curl -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" -H "Accept: ${CONTENT_TYPE}" "${REGISTRY_NAME}/${REPOSITORY}/manifests/${TAG_OLD}"
-        MANIFEST=$(curl -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" -H "Accept: ${CONTENT_TYPE}" "${REGISTRY_NAME}/${REPOSITORY}/manifests/${TAG_OLD}")
+        MANIFEST=$(curl -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" -H "Accept: ${CONTENT_TYPE}" "${REGISTRY_NAME}/${REPOSITORY}/manifests/${TAG_OLD}" -L)
+        echo $MANIFEST
         curl -X PUT -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" -H "Content-Type: ${CONTENT_TYPE}" -d "${MANIFEST}" "${REGISTRY_NAME}/${REPOSITORY}/manifests/${TAG_NEW}"
 
  #### publish ############################################
