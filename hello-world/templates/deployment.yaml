@@ -1,0 +1,39 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-world-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hello-world
+  template:
+    metadata:
+      labels:
+        app: hello-world
+        namespace: {{ .Values.env }}
+    spec:
+      containers:
+      - name: hello-world
+        image: ubuntu/nginx:1.18-22.04_beta
+        volumeMounts:
+        - name: nginx-config-volume
+          mountPath: /etc/nginx/nginx.conf
+          subPath: nginx.conf
+        # - name: nginx-config-volume
+        #   mountPath: /srv/www/index.html
+        #   subPath: index.html
+        ports:
+        - containerPort: 80
+          name: hello-world
+          protocol: TCP
+      volumes:
+        - name: nginx-config-volume
+          configMap:
+            name: nginx-config-{{ .Values.env }}
+            items:
+            - key: nginx
+              path: nginx.conf
+            # - key: nginx-site
+            #   path: index.html

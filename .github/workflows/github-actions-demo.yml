@@ -171,4 +171,6 @@ jobs:
         gist_description: "Hello World example"
         gist_file_name: ${{ env.ARTIFACT_NAME }}-latest.yaml
         file_path: ${{ env.ARTIFACT_NAME }}-${{ needs.release.outputs.RELEASE_VERSION }}.yaml
-
+    - name: Update staging environment state
+        
+    - name: Update production environment state 
