@@ -28,7 +28,37 @@ jobs:
         with:
           name: ${{ env.ARTIFACT_NAME }}-${{ steps.build_number.outputs.BUILD_NUMBER }}.yaml
           path: ${{ env.ARTIFACT_NAME }}-${{ steps.build_number.outputs.BUILD_NUMBER }}.yaml
+            # setup Docker buld action
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Login to Github Packages
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
       
+      - name: Build image and push to Docker Hub and GitHub Container Registry
+        uses: docker/build-push-action@v3
+        with:
+          # relative path to the place where source code with Dockerfile is located
+          context: .
+          push: ${{ github.ref == 'refs/heads/trunk' }}
+          # Note: tags has to be all lower-case
+          tags: |
+            ghcr.io/13013swagr/hello-world:${{ env.ARTIFACT_NAME }}-${{ steps.build_number.outputs.BUILD_NUMBER }}
+          # build on feature branches, push only on main branch
+      - name: Image digest
+        run: echo ${{ steps.docker_build.outputs.digest }}
+
+
 ##### release ##################################################################################################
   release:
     permissions:
@@ -101,6 +131,18 @@ jobs:
         replacesArtifacts: false
         removeArtifacts: false
         tag: ${{ steps.new_version.outputs.version_tag }}
+
+    - name: Tag Docker image
+      if: ${{ !env.ACT }}
+      run: |
+        REGISTRY_NAME="http://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}ghcr.io
+        REPOSITORY=13013swagr/hello-world
+        TAG_OLD=${{ env.ARTIFACT_NAME }}-${{ steps.build_number.outputs.BUILD_NUMBER }}
+        TAG_NEW=${{ env.ARTIFACT_NAME }}-${{ steps.release_version.outputs.RELEASE_VERSION }}
+        CONTENT_TYPE="application/vnd.docker.distribution.manifest.v2+json"
+
+        MANIFEST=$(curl -H "Accept: ${CONTENT_TYPE}" "${REGISTRY_NAME}/v2/${REPOSITORY}/manifests/${TAG_OLD}")
+        curl -X PUT -H "Content-Type: ${CONTENT_TYPE}" -d "${MANIFEST}" "${REGISTRY_NAME}/v2/${REPOSITORY}/manifests/${TAG_NEW}"
 
  #### publish ############################################
  # Publishing of artifact could be done separatly 
