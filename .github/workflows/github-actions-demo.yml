@@ -142,10 +142,10 @@ jobs:
         TAG_NEW=${{ env.ARTIFACT_NAME }}-${{ steps.release_version.outputs.RELEASE_VERSION }}
         GHCR_TOKEN=$(echo ${{ secrets.GITHUB_TOKEN }} | base64)
         CONTENT_TYPE="application/vnd.docker.distribution.manifest.v2+json"
-        MANIFEST=$(curl -v -H "Authorization: Bearer ${GHCR_TOKEN}" "$REGISTRY_NAME/v2/$REPOSITORY/manifests/$TAG_OLD")
+        MANIFEST=$(curl -v -H "Authorization: Bearer ${GHCR_TOKEN}" "$REGISTRY_NAME/v2/$REPOSITORY/manifests/$TAG_OLD" -L)
         echo $MANIFEST
         echo test
-        curl -f -v -X PUT -H "Authorization: Bearer ${GHCR_TOKEN}" -H "Content-Type: ${CONTENT_TYPE}" -d "${MANIFEST}" "$REGISTRY_NAME/v2/$REPOSITORY/manifests/$TAG_NEW"
+        curl -f -v -X PUT -H "Authorization: Bearer ${GHCR_TOKEN}" -H "Content-Type: ${CONTENT_TYPE}" -d "${MANIFEST}" "$REGISTRY_NAME/v2/$REPOSITORY/manifests/$TAG_NEW" -L
 
  #### publish ############################################
  # Publishing of artifact could be done separatly 
