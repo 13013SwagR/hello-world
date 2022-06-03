@@ -144,8 +144,7 @@ jobs:
         CONTENT_TYPE="application/vnd.docker.distribution.manifest.v2+json"
         MANIFEST=$(curl -f -H "Authorization: Bearer ${GHCR_TOKEN}" "$REGISTRY_NAME/v2/$REPOSITORY/manifests/$TAG_OLD" -L)
         echo $MANIFEST
-        echo test
-        curl -f -X PUT -H "Authorization: Bearer ${GHCR_TOKEN}" -H "Content-Type: ${CONTENT_TYPE}" -d "${MANIFEST}" "$REGISTRY_NAME/v2/$REPOSITORY/manifests/$TAG_NEW" -L
+        curl -f -v -X PUT -H "Authorization: Bearer ${GHCR_TOKEN}" -H "Content-Type: ${CONTENT_TYPE}" -d "${MANIFEST}" "$REGISTRY_NAME/v2/$REPOSITORY/manifests/$TAG_NEW"
 
  #### publish ############################################
  # Publishing of artifact could be done separatly 
