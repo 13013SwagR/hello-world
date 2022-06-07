@@ -1,4 +1,4 @@
 ---
-env: dev
+env: production
 image:
   version: 1.27.0
