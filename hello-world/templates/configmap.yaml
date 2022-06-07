@@ -1,8 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: nginx-config-{{ .Values.env }}
-data:
-  nginx: "# user www-data;\nworker_processes auto;\npid /run/nginx.pid;\n\nevents
-    { }\n\nhttp {\n\tserver {\n\t\tlisten 80 default_server;\n\t\tlisten [::]:80 default_server;\n\t\troot
-    /srv/www;\n\t\tindex index-{{ .Values.env }}.html;\n\t\tserver_name _;\n\t}\n}\n"

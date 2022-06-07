@@ -3,6 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: hello-world-deployment
+  namespace: hello-world-{{ .Values.env }}
 spec:
   replicas: 1
   selector:
@@ -16,7 +17,7 @@ spec:
     spec:
       containers:
       - name: hello-world
-        image: ubuntu/nginx:1.18-22.04_beta
+        image:  ghcr.io/13013swagr/hello-world:heelo-world-1.25.0
         volumeMounts:
         - name: nginx-config-volume
           mountPath: /etc/nginx/nginx.conf
@@ -28,6 +29,7 @@ spec:
         - containerPort: 80
           name: hello-world
           protocol: TCP
+
       volumes:
         - name: nginx-config-volume
           configMap:

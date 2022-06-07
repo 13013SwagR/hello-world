@@ -1,0 +1,23 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-config-{{ .Values.env }}
+  namespace: hello-world-{{ .Values.env }}
+data:
+  nginx: |
+      # user www-data;
+      worker_processes auto;
+      pid /run/nginx.pid;
+
+      events { }
+
+      http {
+        server {
+          listen 80 default_server;
+          listen [::]:80 default_server;
+          root /srv/www;
+          index index-{{ .Values.env }}.html;
+          server_name _;
+        }
+      }

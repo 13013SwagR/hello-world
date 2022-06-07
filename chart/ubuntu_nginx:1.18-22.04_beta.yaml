@@ -1,0 +1,108 @@
+[
+    {
+        "Id": "sha256:dc634498298edb6d8dae0cbcb2d56349ac3fc014d9f1aaab2d7750e7367406ff",
+        "RepoTags": [
+            "ubuntu/nginx:1.18-22.04_beta",
+            "ubuntu/nginx:edge"
+        ],
+        "RepoDigests": [
+            "ubuntu/nginx@sha256:0673e3ea3fe63c8497652af82bf424babcc98a8fbbaa8e390fd5a06d16beecb6"
+        ],
+        "Parent": "",
+        "Comment": "",
+        "Created": "2022-05-25T23:33:30.101164716Z",
+        "Container": "11114ffdb415eac763fcd002fda7215dae34794d098640b9f3fc9f96ed9a3c5f",
+        "ContainerConfig": {
+            "Hostname": "11114ffdb415",
+            "Domainname": "",
+            "User": "",
+            "AttachStdin": false,
+            "AttachStdout": false,
+            "AttachStderr": false,
+            "ExposedPorts": {
+                "80/tcp": {}
+            },
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": [
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "TZ=UTC"
+            ],
+            "Cmd": [
+                "/bin/sh",
+                "-c",
+                "#(nop) ",
+                "CMD [\"nginx\" \"-g\" \"daemon off;\"]"
+            ],
+            "Image": "sha256:c19c82eeedb7554d0cd09001dce941c264b8665d8f77e64077b1b288fe078002",
+            "Volumes": null,
+            "WorkingDir": "",
+            "Entrypoint": [
+                "/docker-entrypoint.sh"
+            ],
+            "OnBuild": null,
+            "Labels": {},
+            "StopSignal": "SIGTERM"
+        },
+        "DockerVersion": "20.10.7",
+        "Author": "",
+        "Config": {
+            "Hostname": "",
+            "Domainname": "",
+            "User": "",
+            "AttachStdin": false,
+            "AttachStdout": false,
+            "AttachStderr": false,
+            "ExposedPorts": {
+                "80/tcp": {}
+            },
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": [
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "TZ=UTC"
+            ],
+            "Cmd": [
+                "nginx",
+                "-g",
+                "daemon off;"
+            ],
+            "Image": "sha256:c19c82eeedb7554d0cd09001dce941c264b8665d8f77e64077b1b288fe078002",
+            "Volumes": null,
+            "WorkingDir": "",
+            "Entrypoint": [
+                "/docker-entrypoint.sh"
+            ],
+            "OnBuild": null,
+            "Labels": null,
+            "StopSignal": "SIGTERM"
+        },
+        "Architecture": "amd64",
+        "Os": "linux",
+        "Size": 144122991,
+        "VirtualSize": 144122991,
+        "GraphDriver": {
+            "Data": {
+                "LowerDir": "/var/lib/docker/overlay2/d694ee6bdbc0664313811dcd11fa080e23ffe3792e16fae6439f28996d3ffea6/diff:/var/lib/docker/overlay2/d8a6633d5ca1d363253c67bb7d7bee3cbc815e19456c1a7abcd22c9b1a32f417/diff:/var/lib/docker/overlay2/4d2ff93fa7da1551a4463992fc17c55404d042a4bb356dcbc5c9b8fb3e96f7f5/diff",
+                "MergedDir": "/var/lib/docker/overlay2/0395e503a91b3dd92ccf8b1d563321a3c4c9498bafb8d0b50c4e5a4d8bb2f193/merged",
+                "UpperDir": "/var/lib/docker/overlay2/0395e503a91b3dd92ccf8b1d563321a3c4c9498bafb8d0b50c4e5a4d8bb2f193/diff",
+                "WorkDir": "/var/lib/docker/overlay2/0395e503a91b3dd92ccf8b1d563321a3c4c9498bafb8d0b50c4e5a4d8bb2f193/work"
+            },
+            "Name": "overlay2"
+        },
+        "RootFS": {
+            "Type": "layers",
+            "Layers": [
+                "sha256:e59fc94956120a6c7629f085027578e6357b48061d45714107e79f04a81a6f0c",
+                "sha256:48228db7bfdc3e86ee42a279ee0d4e77951127542690eb3422d8a4550aaf90a8",
+                "sha256:f0cc26f77f4da4a42ffea4ecc224ddb11743997b32950498048cff8f980aebbc",
+                "sha256:d76dd73fe321984362b656c02b8d89c79111b94aafe922abe09b98749151484b"
+            ]
+        },
+        "Metadata": {
+            "LastTagTime": "0001-01-01T00:00:00Z"
+        }
+    }
+]
