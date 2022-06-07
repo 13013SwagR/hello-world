@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: hello-world
-        image: ghcr.io/13013swagr/hello-world:1.25.0
+        image: {{ .Values.image.name }}:{{ .Values.image.version}}
         volumeMounts:
         - name: nginx-config-volume
           mountPath: /etc/nginx/nginx.conf
