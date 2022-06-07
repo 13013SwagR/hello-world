@@ -53,7 +53,8 @@ jobs:
           push: ${{ github.ref == 'refs/heads/trunk' }}
           # Note: tags has to be all lower-case
           tags: |
-            ghcr.io/13013swagr/hello-world:${{ env.ARTIFACT_NAME }}-${{ steps.build_number.outputs.BUILD_NUMBER }}
+            ghcr.io/13013swagr/hello-world:${{ steps.build_number.outputs.BUILD_NUMBER }}
+            ghcr.io/13013swagr/hello-world:alpha-latest
           # build on feature branches, push only on main branch
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
@@ -138,8 +139,8 @@ jobs:
       run: |
         REGISTRY_NAME="https://ghcr.io"
         REPOSITORY=${{ github.actor }}/hello-world
-        TAG_OLD=${{ env.ARTIFACT_NAME }}-${{ needs.build.outputs.BUILD_NUMBER }}
-        TAG_NEW=${{ env.ARTIFACT_NAME }}-${{ steps.new_version.outputs.version_tag }}
+        TAG_OLD=${{ needs.build.outputs.BUILD_NUMBER }}
+        TAG_NEW=${{ steps.new_version.outputs.version_tag }}
         GHCR_TOKEN=$(echo ${{ secrets.GITHUB_TOKEN }} | base64)
         CONTENT_TYPE="application/vnd.docker.distribution.manifest.v2+json"
         MANIFEST=$(curl -f -H "Authorization: Bearer ${GHCR_TOKEN}" "$REGISTRY_NAME/v2/$REPOSITORY/manifests/$TAG_OLD" -L)
