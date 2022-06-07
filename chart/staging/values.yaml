@@ -2,3 +2,4 @@
 env: staging
 image:
   version: alpha-latest
+nodePort: 31082

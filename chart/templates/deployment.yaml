@@ -2,7 +2,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: hello-world-deployment
+  name: hello-world-deployment-{{ .Values.env }}
   namespace: hello-world-{{ .Values.env }}
 spec:
   replicas: 1
