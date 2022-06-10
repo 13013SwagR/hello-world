@@ -1,5 +1,5 @@
 ---
 env: production
 image:
-  version: 1.27.0
+  version: alpha-latest
 nodePort: 31083
