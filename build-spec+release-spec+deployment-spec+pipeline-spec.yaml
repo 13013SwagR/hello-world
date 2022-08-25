@@ -1,0 +1,39 @@
+---
+apiVersion: CcsStandard/v1
+kind: CcsBuild
+metadata:
+  name: build_first_unicorn
+spec:
+  depends_on: []
+  environment: my-docker-image
+  command: docker build $REPOSITORY_DIR
+---
+apiVersion: CcsStandard/v1
+kind: CcsRelease
+metadata:
+  name: alpha_release_first_unicorn
+spec:
+  depends_on: []
+  level: alpha
+  type: MINOR
+  metadata: []
+---
+apiVersion: CcsStandard/v1
+kind: CcsDeployment
+metadata:
+  name: deploy_alpha_first_unicorn
+spec:
+  depends_on: []
+  environment: staging
+  release:
+    task: alpha_release_first_unicorn
+---
+apiVersion: CcsStandard/v1
+kind: CcsPipeline
+metadata:
+  name: unicorn_pipeline
+spec:
+  engine: github-action
+  build: build_first_unicorn
+  
+  
